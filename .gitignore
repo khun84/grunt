@@ -1,0 +1,11 @@
+*.swp
+*.swo
+.capistrano
+.byebug_history
+.idea/
+config/settings.local.yml
+log/
+tmp/
+logs/
+http/
+spec/examples.txt

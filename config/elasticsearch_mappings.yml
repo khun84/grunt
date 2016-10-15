@@ -1,0 +1,131 @@
+pull_requests:
+  settings:
+    number_of_shards: 1
+    number_of_replicas: 0
+    analysis:
+      analyzer:
+        std_analyzer:
+          tokenizer: letter
+          filter:
+            - lowercase
+            - stop
+            - snowball
+          type: custom
+  mappings:
+    doc:
+      dynamic: false
+      properties:
+        url:
+          type: 'text'
+          analyzer: std_analyzer
+        html_url:
+          type: 'text'
+          analyzer: std_analyzer
+        number:
+          type: 'integer'
+          fields:
+            string:
+              type: text
+              analyzer: standard
+        state:
+          type: keyword
+        title:
+          type: text
+          analyzer: std_analyzer
+        created_at:
+          type: date
+        updated_at:
+          type: date
+        base:
+          type: text
+          analyzer: std_analyzer
+        user:
+          type: text
+          analyzer: std_analyzer
+        branch:
+          type: text
+          analyzer: std_analyzer
+        avatar_url:
+          type: keyword
+aasm_log:
+  settings:
+    number_of_shards: 1
+    number_of_replicas: 0
+    analysis:
+      analyzer:
+        std_analyzer:
+          tokenizer: letter
+          filter:
+            - lowercase
+            - stop
+            - snowball
+          type: custom
+  mappings:
+    doc:
+      dynamic: false
+      properties:
+        object_id:
+          type: integer
+        object_ids:
+          type: integer
+        class:
+          type: text
+          analyzer: std_analyzer
+        from:
+          type: keyword
+        to:
+          type: keyword
+        event:
+          type: text
+          analyzer: std_analyzer
+        timestamp:
+          type: date
+        country:
+          type: keyword
+        severity:
+          type: keyword
+        message:
+          type: text
+admin_log:
+  settings:
+    number_of_shards: 1
+    number_of_replicas: 0
+    analysis:
+      analyzer:
+        std_analyzer:
+          tokenizer: letter
+          filter:
+            - lowercase
+            - stop
+            - snowball
+          type: custom
+        path_analyzer:
+          tokenizer: path_hierarchy
+          type: custom
+  mappings:
+    doc:
+      dynamic: true
+      properties:
+        '@timestamp':
+           type: date
+        action:
+          type: keyword
+        apartment:
+          type: keyword
+        controller:
+          type: text
+          fields:
+            controller_path:
+              type: text
+              analyzer: path_analyzer
+          analyzer: std_analyzer
+        host:
+          type: keyword
+        params:
+          type: text
+        severity:
+          type: keyword
+        status:
+          type: integer
+        timestamp:
+          type: date

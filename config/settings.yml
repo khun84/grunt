@@ -1,0 +1,7 @@
+github:
+  username:
+  api_key:
+  api_path:
+elasticsearch:
+  host: 0.0.0.0
+  port: 9200
