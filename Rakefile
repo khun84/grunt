@@ -21,10 +21,11 @@ task 'es:import_pull_requests' do
   puts ::GitHubWorker.new.perform
 end
 
-task 'es:import_admin_log', [:filepaths] do |_t, args|
+task 'es:import_admin_log', [:filepaths, :exclude_actions] do |_t, args|
   files = args[:filepaths].split(' ')
+  actions = args[:exclude_actions]&.split(' ') || []
   files.each do |f|
-    puts ::AdminLogImporter.run(filepath: f)
+    puts ::AdminLogImporter.run(filepath: f, exclude_actions: actions)
   end
 end
 
