@@ -1,0 +1,13 @@
+version: "3"
+services:
+  grunt:
+    image: grunt
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: /bin/sh
+    tty: true
+    volumes:
+      - .:/app
+    ports:
+      - 9200:9200
