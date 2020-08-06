@@ -129,3 +129,50 @@ admin_log:
           type: integer
         timestamp:
           type: date
+business_profile_log:
+  settings:
+    number_of_shards: 1
+    number_of_replicas: 0
+    analysis:
+      analyzer:
+        std_analyzer:
+          tokenizer: letter
+          filter:
+            - lowercase
+            - stop
+            - snowball
+          type: custom
+        path_analyzer:
+          tokenizer: path_hierarchy
+          type: custom
+  mappings:
+    doc:
+      dynamic: true
+      properties:
+        event:
+          type: keyword
+        apartment:
+          type: keyword
+        instance:
+          type: keyword
+        severity:
+          type: keyword
+        timestamp:
+          type: date
+        message:
+          type: text
+          analyzer: std_analyzer
+        filename:
+          type: text
+          analyzer: std_analyzer
+        business_profile_id:
+          type: 'integer'
+        business_name:
+          type: text
+          analyzer: std_analyzer
+        object_class:
+          type: text
+          analyzer: std_analyzer
+          fields:
+            keyword:
+              type: keyword
