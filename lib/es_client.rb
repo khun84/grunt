@@ -88,12 +88,15 @@ class EsClient
   private
 
   def bulkify(action, data)
+    payload = {
+      _index: index_name,
+      _type: :_doc,
+      data: data
+    }
+    payload['_id'] = data['_id'] if data['_id']
+    data.reject! { |k, _| k == '_id' }
     {
-      "#{action}": {
-        _index: index_name,
-        _type: :_doc,
-        data: data
-      }
+      "#{action}": payload
     }
   end
 
