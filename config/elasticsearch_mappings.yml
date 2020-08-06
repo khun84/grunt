@@ -1,3 +1,14 @@
+analyzers:
+  std_analyzer: &std_analyzer
+    tokenizer: letter
+    filter:
+      - lowercase
+      - stop
+      - snowball
+    type: custom
+  path_analyzer: &path_analyzer
+    tokenizer: path_hierarchy
+    type: custom
 pull_requests:
   settings:
     number_of_shards: 1
@@ -5,12 +16,7 @@ pull_requests:
     analysis:
       analyzer:
         std_analyzer:
-          tokenizer: letter
-          filter:
-            - lowercase
-            - stop
-            - snowball
-          type: custom
+          <<: *std_analyzer
   mappings:
     doc:
       dynamic: false
@@ -54,21 +60,16 @@ aasm_log:
     analysis:
       analyzer:
         std_analyzer:
-          tokenizer: letter
-          filter:
-            - lowercase
-            - stop
-            - snowball
-          type: custom
+          <<: *std_analyzer
   mappings:
     doc:
-      dynamic: false
+      dynamic: true
       properties:
         object_id:
           type: integer
         object_ids:
           type: integer
-        class:
+        object_class:
           type: text
           analyzer: std_analyzer
         from:
@@ -78,6 +79,9 @@ aasm_log:
         event:
           type: text
           analyzer: std_analyzer
+          fields:
+            keyword:
+              type: keyword
         timestamp:
           type: date
         country:
@@ -93,15 +97,9 @@ admin_log:
     analysis:
       analyzer:
         std_analyzer:
-          tokenizer: letter
-          filter:
-            - lowercase
-            - stop
-            - snowball
-          type: custom
+          <<: *std_analyzer
         path_analyzer:
-          tokenizer: path_hierarchy
-          type: custom
+          <<: *path_analyzer
   mappings:
     doc:
       dynamic: true
@@ -136,15 +134,9 @@ business_profile_log:
     analysis:
       analyzer:
         std_analyzer:
-          tokenizer: letter
-          filter:
-            - lowercase
-            - stop
-            - snowball
-          type: custom
+          <<: *std_analyzer
         path_analyzer:
-          tokenizer: path_hierarchy
-          type: custom
+          <<: *path_analyzer
   mappings:
     doc:
       dynamic: true

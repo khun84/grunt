@@ -17,31 +17,44 @@ task "console" do
     system "irb -r irb/completion -r ./lib/console.rb"
 end
 
-task 'es:import_pull_requests' do
-  puts ::GitHubWorker.new.perform
-end
-
-task 'es:import_admin_log', [:filepaths, :exclude_actions] do |_t, args|
-  files = args[:filepaths].split(' ')
-  actions = args[:exclude_actions]&.split(' ') || []
-  files.each do |f|
-    puts ::AdminLogImporter.run(filepath: f, exclude_actions: actions)
+namespace :es do
+  task 'import_pull_requests' do
+    puts ::GitHubWorker.new.perform
   end
-end
 
-task 'es:delete_admin_log' do
-  puts EsClient.get_client(index_name: 'admin_log').delete_index!
-end
-
-task 'es:import_business_profile_log', [:filepaths] do |_t, args|
-  files = args[:filepaths].split(' ')
-  files.each do |f|
-    puts ::BusinessProfileLogImporter.run(filepath: f)
+  task 'import_admin_log', [:filepaths, :exclude_actions] do |_t, args|
+    files = args[:filepaths].split(' ')
+    actions = args[:exclude_actions]&.split(' ') || []
+    files.each do |f|
+      puts ::AdminLogImporter.run(filepath: f, exclude_actions: actions)
+    end
   end
-end
 
-task 'es:delete_business_profile_log' do
-  puts EsClient.get_client(index_name: 'admin_log').delete_index!
+  task 'delete_admin_log' do
+    puts EsClient.get_client(index_name: 'admin_log').delete_index!
+  end
+
+  task 'import_business_profile_log', [:filepaths] do |_t, args|
+    files = args[:filepaths].split(' ')
+    files.each do |f|
+      puts ::BusinessProfileLogImporter.run(filepath: f)
+    end
+  end
+
+  task 'delete_business_profile_log' do
+    puts EsClient.get_client(index_name: 'admin_log').delete_index!
+  end
+
+  task 'import_aasm_log', [:filepaths] do |_t, args|
+    files = args[:filepaths].split(' ')
+    files.each do |f|
+      puts ::AasmLogImporter.run(filepath: f)
+    end
+  end
+
+  task 'delete_aasm_log' do
+    puts EsClient.get_client(index_name: 'aasm_log').delete_index!
+  end
 end
 
 namespace :thin do
