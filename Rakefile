@@ -33,6 +33,17 @@ task 'es:delete_admin_log' do
   puts EsClient.get_client(index_name: 'admin_log').delete_index!
 end
 
+task 'es:import_business_profile_log', [:filepaths] do |_t, args|
+  files = args[:filepaths].split(' ')
+  files.each do |f|
+    puts ::BusinessProfileLogImporter.run(filepath: f)
+  end
+end
+
+task 'es:delete_business_profile_log' do
+  puts EsClient.get_client(index_name: 'admin_log').delete_index!
+end
+
 namespace :thin do
   task 'start' do
     exec 'thin -d -R config.ru -a 127.0.0.1 -p 8080 -P tmp/pids/thin.pid -l logs/thin.log start'
