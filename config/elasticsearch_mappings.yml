@@ -168,3 +168,47 @@ business_profile_log:
           fields:
             keyword:
               type: keyword
+cache_log:
+  settings:
+    number_of_shards: 1
+    number_of_replicas: 0
+    analysis:
+      analyzer:
+        std_analyzer:
+          <<: *std_analyzer
+  mappings:
+    doc:
+      dynamic: true
+      properties:
+        event_id:
+          type: keyword
+        country:
+          type: keyword
+        severity:
+          type: keyword
+        timestamp:
+          type: date
+        cache_start_at:
+          type: date
+        cache_end_at:
+          type: date
+        cache_duration:
+          type: double
+        cache_ops:
+          type: keyword
+        key:
+          type: text
+          analyzer: std_analyzer
+          fields:
+            keyword:
+              type: keyword
+        normalized_key:
+          type: text
+          analyzer: std_analyzer
+          fields:
+            keyword:
+              type: keyword
+        nampespace:
+          type: object
+        hit:
+          type: boolean

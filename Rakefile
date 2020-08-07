@@ -55,6 +55,17 @@ namespace :es do
   task 'delete_aasm_log' do
     puts EsClient.get_client(index_name: 'aasm_log').delete_index!
   end
+
+  task 'import_cache_log', [:filepaths] do |_t, args|
+    files = args[:filepaths].split(' ')
+    files.each do |f|
+      puts ::CacheLogImporter.run(filepath: f)
+    end
+  end
+
+  task 'delete_cache_log' do
+    puts EsClient.get_client(index_name: 'cache_log').delete_index!
+  end
 end
 
 namespace :thin do
