@@ -71,5 +71,13 @@ Command is as follows:
 
 `bundle exec rake es:import_admin_log['/app/absolute/path/to/logfile.log']`
 
+If the mappings doesnt really matter to you, you can use the default importer
+
+`bundle exec rake es:import_log['index-name','/app/absolute/path/to/logfile-1.log /app/absolute/path/to/logfile-2.log']`
+
+To delete any index, just do
+
+`bundle exec rake es:delete_index['index-name']`
+
 ## View logs using Kibana
 Kibana will be running on [localhost:5601](http://localhost:5601)
