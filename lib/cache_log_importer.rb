@@ -35,7 +35,7 @@ class CacheLogImporter
       row['_id'] = generate_id(row['event_id'], row['timestamp'], row['country'])
       total_count += 1
       raw_payload.push(row)
-      if (total_count % 50) == 0
+      if (total_count % Settings.elasticsearch.per_batch) == 0
         puts "----------importing #{raw_payload.size} documents-------------"
         es_client.import(raw_payload, force: false, refresh: false)
         raw_payload = []
