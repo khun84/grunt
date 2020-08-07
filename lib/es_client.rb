@@ -2,13 +2,14 @@ require 'elasticsearch-api'
 
 class EsClient
   include ::Elasticsearch::API::Utils
-  attr_reader :index_name, :mapping
+  attr_reader :index_name, :mapping, :default_mapping
   def self.get_client(**config)
     new(**config)
   end
 
   def initialize(**config)
     @index_name = config[:index_name]
+    @default_mapping = config[:default_mapping]
     @mapping = dispatch_mapping(@index_name)
   end
 
@@ -101,6 +102,7 @@ class EsClient
   end
 
   def dispatch_mapping(index_name)
+    return mapping_repo.dispatch_mapping(:default_mappings) if default_mapping
     mapping_repo.dispatch_mapping(index_name)
   end
 

@@ -1,16 +1,16 @@
-class AdminLogImporter
-  attr_reader :es_client, :filepath, :exclude_actions
+require 'base64'
+
+class CacheLogImporter
+  attr_reader :es_client, :filepath
   def self.run(args = {})
     new(**args).run
   end
 
   # @param [Hash] args
   #   @option [String] filepath
-  #   @option [Array<String>] exclude_actions
   def initialize(args = {})
     @filepath = args[:filepath]
-    @exclude_actions = Array(args[:exclude_actions])
-    @es_client = EsClient.new(index_name: :admin_log)
+    @es_client = EsClient.new(index_name: :cache_log)
   end
 
   def run
@@ -26,10 +26,13 @@ class AdminLogImporter
     File.open(filepath, mode: 'r').each_with_index do |row, idx|
       next if idx == 0
       row = JSON.parse(row)
-      next if row['action'].in?(exclude_actions)
+      next if row['key']&.include?('makara')
       row['timestamp'] = row['@timestamp']
-      row['params'] = row['params'].to_json
+      row['country'] = row['apartment']
+      row['normalized_key'] = row['key']&.gsub(/\d+/, '?')
+      row.reject! { |k, _| k == '@timestamp' || k == 'apartment' }
 
+      row['_id'] = generate_id(row['event_id'], row['timestamp'], row['country'])
       total_count += 1
       raw_payload.push(row)
       if (total_count % Settings.elasticsearch.per_batch) == 0
@@ -43,5 +46,11 @@ class AdminLogImporter
       es_client.import(raw_payload, force: false, refresh: false)
     end
     puts "#{filepath} done, imported #{total_count} documents"
+  end
+
+  private
+
+  def generate_id(*args)
+    Base64.strict_encode64(args.join('|'))
   end
 end

@@ -55,6 +55,35 @@ namespace :es do
   task 'delete_aasm_log' do
     puts EsClient.get_client(index_name: 'aasm_log').delete_index!
   end
+
+  task 'import_cache_log', [:filepaths] do |_t, args|
+    files = args[:filepaths].split(' ')
+    files.each do |f|
+      puts ::CacheLogImporter.run(filepath: f)
+    end
+  end
+
+  task 'delete_cache_log' do
+    puts EsClient.get_client(index_name: 'cache_log').delete_index!
+  end
+
+  task 'delete_index', [:index_name] do |_t, args|
+    idx_name = args[:index_name]
+    client = EsClient.get_client(index_name: idx_name)
+    raise "Index #{idx_name} not found!" unless client.index_exists?
+
+    puts client.delete_index!
+  end
+
+  task 'import_log', [:index_name, :filepaths] do |_t, args|
+    idx_name = args[:index_name]
+    files = args[:filepaths].split(' ')
+
+    raise 'Index name is missing' unless idx_name
+    raise 'File path is missing' unless files.compact.size > 0
+
+    puts ::DefaultLogImporter.run(index_name: idx_name, filepaths: files)
+  end
 end
 
 namespace :thin do
