@@ -1,4 +1,4 @@
-require_relative 'init'
+require 'rake'
 require 'rake/testtask'
 # require 'sinatra/activerecord'
 # require 'sinatra/activerecord/rake'
@@ -14,15 +14,20 @@ end
 # A Rails-like interactive console
 desc "Enter interactive console"
 task "console" do
-    system "irb -r irb/completion -r ./lib/console.rb"
+  system "irb -r irb/completion -r pp -r ./init"
+end
+task "c" => :console
+
+task 'environment' do
+  require_relative 'init'
 end
 
 namespace :es do
-  task 'import_pull_requests' do
+  task 'import_pull_requests' => :environment do
     puts ::GitHubWorker.new.perform
   end
 
-  task 'import_admin_log', [:filepaths, :exclude_actions] do |_t, args|
+  task 'import_admin_log', [:filepaths, :exclude_actions] => :environment do |_t, args|
     files = args[:filepaths].split(' ')
     actions = args[:exclude_actions]&.split(' ') || []
     files.each do |f|
@@ -30,29 +35,29 @@ namespace :es do
     end
   end
 
-  task 'delete_admin_log' do
+  task 'delete_admin_log' => :environment do
     puts EsClient.get_client(index_name: 'admin_log').delete_index!
   end
 
-  task 'import_business_profile_log', [:filepaths] do |_t, args|
+  task 'import_business_profile_log', [:filepaths] => :environment do |_t, args|
     files = args[:filepaths].split(' ')
     files.each do |f|
       puts ::BusinessProfileLogImporter.run(filepath: f)
     end
   end
 
-  task 'delete_business_profile_log' do
+  task 'delete_business_profile_log' => :environment do
     puts EsClient.get_client(index_name: 'admin_log').delete_index!
   end
 
-  task 'import_aasm_log', [:filepaths] do |_t, args|
+  task 'import_aasm_log', [:filepaths] => :environment do |_t, args|
     files = args[:filepaths].split(' ')
     files.each do |f|
       puts ::AasmLogImporter.run(filepath: f)
     end
   end
 
-  task 'delete_aasm_log' do
+  task 'delete_aasm_log' => :environment do
     puts EsClient.get_client(index_name: 'aasm_log').delete_index!
   end
 

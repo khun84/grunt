@@ -1,9 +1,9 @@
 require 'sinatra/base'
 require 'sinatra/content_for' # For "yield_content" in ERB
-require_relative 'init'
 require 'sinatra/cross_origin'
 
 class Main < Sinatra::Application
+  include ::DateHelper
   # It's for auto reloading the ruby files under your LIB_DIR when you make any
   # changes to them in development mode, so that you don't have to restart your
   # dev server.
@@ -32,8 +32,7 @@ class Main < Sinatra::Application
   get '/pull_requests/search' do
     content_type :json
     payload = ::EsClient.get_client(index_name: :pull_requests).search(params[:keyword]).map do |pr|
-      # pr.merge(since: human_readable_time(Chronic.parse(pr['created_at']), Time.current))
-      pr
+      pr.merge(since: human_readable_time(Chronic.parse(pr['created_at']), Time.current))
     end
     payload.to_json
   end

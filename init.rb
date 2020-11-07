@@ -1,17 +1,10 @@
-require 'rubygems'
-require 'bundler'
-
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path('./Gemfile', __dir__)
 ENV['RACK_ENV'] ||= 'development'
-Bundler.setup(:default, ENV['RACK_ENV'])
-# load gemfile
-require 'nokogiri'
-require 'sidekiq'
-require 'sinatra'
-require 'config'
-require 'rest-client'
-require 'chronic'
-require 'chronic_duration'
-require 'active_support/all'
+ENV['ENV'] ||= ENV['RACK_ENV']
+require 'rubygems'
+require 'bundler/setup'
+
+Bundler.require(:default, ENV['RACK_ENV'])
 
 # register config file
 Sinatra::Application.class_eval do
@@ -34,6 +27,8 @@ end
 Dir.glob(File.join(LIB_DIR, '**', '*.rb')).each do |f|
   require f
 end
+
+require_relative './main'
 
 # This must be named "config" and be under the APP_ROOT, otherwise
 # sinatra/activerecord can't find it.

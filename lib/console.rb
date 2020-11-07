@@ -1,6 +1,5 @@
 # The lib is solely for "rake console"
 
-# require_relative '../main'
 require_relative '../init'
 require 'pp' # For pretty print
 # require 'sinatra/activerecord'
