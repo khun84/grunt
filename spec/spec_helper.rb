@@ -16,7 +16,7 @@
 #
 
 ENV['RACK_ENV'] = 'test'
-require_relative '../main'
+require_relative '../init'
 require 'rack/test'
 
 RSpec.configure do |config|
