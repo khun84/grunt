@@ -1,0 +1,5 @@
+queues:
+  - daniel-payment.fifo
+delay: 5
+concurrency: 10
+pidfile: 'tmp/pids/shoryuken.pid'
