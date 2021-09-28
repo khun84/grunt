@@ -21,6 +21,7 @@ gem 'chronic_duration'
 gem 'logstash-logger'
 gem 'sinatra-cross_origin'
 gem 'aws-sdk-sqs'
+gem 'aws-sdk-s3'
 gem 'shoryuken'
 gem 'terminal-table'
 
