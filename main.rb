@@ -77,4 +77,5 @@ class Main < Sinatra::Application
   #     body({ message: 'File params is missing.' }.to_json)
   #   end
   # end
+  require_relative 'tmp/apis/apis' if File.exists?(File.join(APP_ROOT, 'tmp', 'apis', 'apis.rb'))
 end

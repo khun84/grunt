@@ -11,3 +11,6 @@ http/
 spec/examples.txt
 db/database.yml
 db/*.sqlite3
+public/css
+public/images
+public/js
