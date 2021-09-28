@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sinatra Example</title>
+    <!-- link rel="shortcut icon" href="/img/favicon.png" -->
+    <!-- link rel="stylesheet" href="/css/layout.css" -->
+    <%= yield_content :css %>
+    <style type="text/css">
+        .w3-content{position:relative;margin-top:0em;}
+        .w3-btn,.w3-button{border:none;display:inline-block;outline:0;padding:8px 16px;vertical-align:middle;overflow:hidden;text-decoration:none;color:inherit;background-color:inherit;text-align:center;cursor:pointer;white-space:nowrap}
+        .w3-btn,.w3-button{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+        .w3-disabled,.w3-btn:disabled,.w3-button:disabled{cursor:not-allowed;opacity:0.3}.w3-disabled *,:disabled *{pointer-events:none}
+        .w3-bar-block .w3-dropdown-hover .w3-button,.w3-bar-block .w3-dropdown-click .w3-button{width:100%;text-align:left;padding:8px 16px}
+        .w3-button:hover{color:#000!important;background-color:#ccc!important}
+
+        .w3-content button {
+            position: absolute;
+            top: 32%;
+        }
+
+        .w3-display-right {right:0}
+        .w3-display-left {left:0}
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <% if settings.production? %>
+    <!-- Your Google track code here -->
+    <% end %>
+</head>
+<body>
+<div class="w3-content">
+  <a class="mySlides" href="https://www.mrmuscleclean.com/ms-my/products" target="_blank">
+    <img src="/images/mr-muscle-banner-1.png" alt="custom_html_banner1" style="width:100%">
+  </a>
+  <a class="mySlides" href="https://www.mrmuscleclean.com/ms-my/products" target="_blank">
+    <img src="/images/mr-muscle-banner-2.png" alt="custom_html_banner2" style="width:100%">
+  </a>
+  <a class="mySlides" href="https://www.mrmuscleclean.com/ms-my/products" target="_blank">
+    <img src="/images/mr-muscle-banner-3.png" alt="custom_html_banner3" style="width:100%">
+  </a>
+  <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+  <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+</div>
+
+<!-- script src="/js/app.js"></script -->
+
+<script>
+  var slideIndex = 1;
+  showDivs(slideIndex);
+  function plusDivs(n) {
+    showDivs(slideIndex += n);
+  }
+  function showDivs(n) {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    if (n > x.length) {slideIndex = 1} if (n < 1) {slideIndex = x.length}for
+    (i = 0; i < x.length; i++) {x[i].style.display = "none";}
+    x[slideIndex-1].style.display = "block"; }
+</script>
+</body>
+</html>
+
