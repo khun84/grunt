@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'sinatra/content_for' # For "yield_content" in ERB
 require 'sinatra/cross_origin'
+require 'fileutils'
 
 class Main < Sinatra::Application
   include ::DateHelper
@@ -14,6 +15,7 @@ class Main < Sinatra::Application
       also_reload file
     end
   end
+  register Sinatra::ActiveRecordExtension
   register Sinatra::CrossOrigin
 
   options '*' do
@@ -46,4 +48,33 @@ class Main < Sinatra::Application
     content_type :json
 
   end
+
+  post '/chores-bot' do
+    content_type :json
+    payload = JSON.parse(params[:payload])
+    AppLogger.info(payload)
+    payments = Payment.last_n_payments
+    res_payload = Slack::PaymentSummarySerializer.new(payments).as_json
+
+    begin
+      RestClient.post(payload['response_url'], res_payload.to_json)
+      {}.to_json
+    rescue StandardError => e
+      AppLogger.error(request_url: payload['response_url'],err_message: e.message, backtrace: e.backtrace.take(20).join("\n"))
+      status 422
+    end
+  end
+
+  # post '/upload' do
+  #   if (tempfile = params[:file][:tempfile]) && (filename = params[:file][:filename])
+  #     ext = File.extname(filename)
+  #     filename = [File.basename(filename, '.*'), '-', Time.current.strftime('%Y%m%d%H%M%S')].compact.join('')
+  #     filename += ext if ext
+  #     FileUtils.cp(tempfile.path, File.join('tmp', 'upload', filename))
+  #     status 200
+  #   else
+  #     status 422
+  #     body({ message: 'File params is missing.' }.to_json)
+  #   end
+  # end
 end

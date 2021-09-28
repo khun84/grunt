@@ -1,5 +1,8 @@
 require 'rake'
 require 'rake/testtask'
+require 'yaml'
+require "sinatra/activerecord/rake"
+
 # require 'sinatra/activerecord'
 # require 'sinatra/activerecord/rake'
 
@@ -14,7 +17,7 @@ end
 # A Rails-like interactive console
 desc "Enter interactive console"
 task "console" do
-  system "irb -r irb/completion -r pp -r ./init"
+  system "AWS_PROFILE=daniel-khun irb -r irb/completion -r pp -r ./init"
 end
 task "c" => :console
 
@@ -102,5 +105,12 @@ namespace :thin do
 
   task 'stop' do
     exec 'thin -R config.ru -a 127.0.0.1 -p 8080 -P tmp/pids/thin.pid -l logs/thin.log stop'
+  end
+end
+
+namespace :db do
+  task 'load_config' do
+    require_relative 'init'
+    ActiveRecord::Base.configurations = YAML.load_file 'config/database.yml'
   end
 end

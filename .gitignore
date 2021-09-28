@@ -9,3 +9,5 @@ tmp/
 logs/
 http/
 spec/examples.txt
+db/database.yml
+db/*.sqlite3

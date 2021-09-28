@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
+gem 'activerecord'
 gem 'sinatra'
+gem "sinatra-activerecord"
 gem 'sinatra-contrib'
 # gem 'sinatra-activerecord'
 # If you want mysql, replace the pg gem with a mysql gem, and change
@@ -13,9 +15,15 @@ gem 'config', require: 'config'
 gem 'activesupport', require: 'active_support/all'
 gem 'nokogiri'
 gem 'elasticsearch-model'
+gem 'sqlite3'
 gem 'chronic'
 gem 'chronic_duration'
+gem 'logstash-logger'
 gem 'sinatra-cross_origin'
+gem 'aws-sdk-sqs'
+gem 'aws-sdk-s3'
+gem 'shoryuken'
+gem 'terminal-table'
 
 group :development, :test do
   gem 'byebug'
