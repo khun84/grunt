@@ -6,3 +6,5 @@ elasticsearch:
   host: 0.0.0.0
   port: 9200
   per_batch: 50
+s3:
+  region: ap-southeast-1

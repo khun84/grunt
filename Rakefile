@@ -108,6 +108,49 @@ namespace :thin do
   end
 end
 
+def start_sidekiq(**opts)
+  opts ||= {}
+  daemonize = opts[:daemonize] ? '-d' : ''
+  exec "bundle exec sidekiq #{daemonize} -e development -r ./init.rb -C ./config/sidekiq.yml"
+end
+
+task :sidekiq_start, [:flags] do |_t, args|
+  daemonize = args[:flags]&.split(' ')&.include?('-d')
+  puts "Starting sidekiq..."
+  start_sidekiq(daemonize: daemonize)
+end
+
+def stop_sidekiq(pid_file)
+  exec "sidekiqctl stop #{pid_file} 10"
+end
+
+def pid_file_exists?(pid_file)
+  File.exists?(pid_file)
+end
+
+def pid_process_exists?(pid_file)
+  pid = File.read(pid_file).gsub("\n", "").to_i
+  return false if pid == 0
+  !Process.kill(0, pid.to_i).nil?
+rescue StandardError
+  false
+end
+
+task :sidekiq_stop, [:flags] do
+  pid_file = 'tmp/pids/sidekiq.pid'
+  if pid_file_exists?(pid_file) and pid_process_exists?(pid_file)
+    puts "Stopping sidekiq"
+    stop_sidekiq(pid_file)
+  else
+    "Pid or process not found"
+  end
+end
+
+task :sidekiq_restart do
+  Rake::Task['sidekiq_stop'].invoke
+  Rake::Task['sidekiq_start'].invoke '-d'
+end
+
 namespace :db do
   task 'load_config' do
     require_relative 'init'
