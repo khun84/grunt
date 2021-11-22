@@ -90,7 +90,7 @@ GEM
       faraday
       multi_json
     eventmachine (1.2.0.1)
-    excon (0.59.0)
+    excon (0.88.0)
     faraday (0.17.0)
       multipart-post (>= 1.2, < 3)
     fog-aws (1.4.1)
