@@ -216,3 +216,46 @@ default_mappings:
   settings:
     number_of_shards: 1
     number_of_replicas: 0
+ada_dd_log:
+  settings:
+    number_of_shards: 1
+    number_of_replicas: 0
+    analysis:
+      analyzer:
+        std_analyzer:
+          <<: *std_analyzer
+        path_analyzer:
+          <<: *path_analyzer
+  mappings:
+    doc:
+      dynamic: true
+      properties:
+        '@timestamp':
+          type: date
+        log_name:
+          type: text
+        apartment:
+          type: keyword
+        controller:
+          type: text
+          fields:
+            controller_path:
+              type: text
+              analyzer: path_analyzer
+          analyzer: std_analyzer
+        host:
+          type: keyword
+        request_id:
+          type: keyword
+        worker:
+          type: text
+        params:
+          type: text
+        severity:
+          type: keyword
+        jid:
+          type: keyword
+        status:
+          type: keyword
+        timestamp:
+          type: date

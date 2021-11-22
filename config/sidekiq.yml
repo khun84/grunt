@@ -1,0 +1,8 @@
+---
+:verbose: true
+:logfile: ./log/sidekiq.log
+:concurrency: 5
+:pidfile: tmp/pids/sidekiq.pid
+:queues:
+  - ['grunt:adhoc', 1]
+  - default

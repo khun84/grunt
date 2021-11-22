@@ -36,6 +36,10 @@ Dir.glob(File.join(LIB_DIR, '**', '*.rb')).each do |f|
   require f
 end
 
+Dir.glob(File.join(APP_ROOT, 'tmp', 'workers', '**', '*.rb')).each do |f|
+  require f
+end
+
 require_relative './main'
 
 # This must be named "config" and be under the APP_ROOT, otherwise
