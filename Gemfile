@@ -26,6 +26,7 @@ gem 'aws-sdk-sqs'
 gem 'aws-sdk-s3'
 gem 'shoryuken'
 gem 'terminal-table'
+gem 'aws_config'
 
 group :development, :test do
   gem 'byebug'
