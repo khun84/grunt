@@ -229,5 +229,8 @@ DEPENDENCIES
   terminal-table
   thin
 
+RUBY VERSION
+   ruby 2.5.9p229
+
 BUNDLED WITH
    2.0.1
