@@ -14,6 +14,9 @@ class Main < Sinatra::Application
     Dir.glob(File.join(LIB_DIR, '**', '*.rb')) do |file|
       also_reload file
     end
+    Dir.glob(File.join(TMP_DIR, '{apis,workers}/**', '*.rb')) do |file|
+      also_reload file
+    end
   end
   register Sinatra::ActiveRecordExtension
   register Sinatra::CrossOrigin
