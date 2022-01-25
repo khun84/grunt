@@ -2,6 +2,7 @@ class GithubClient
   USERNAME = ::Settings.github.username
   API_KEY = ::Settings.github.api_key
   API_PATH = ::Settings.github.api_path
+  TOKEN = ::Settings.github.token
   SUCCESS_CODES = (200 .. 399)
 
   attr_reader :title
@@ -24,8 +25,7 @@ class GithubClient
     ::RestClient::Request.execute(
       method: :get,
       url: API_PATH,
-      user: USERNAME,
-      password: API_KEY
+      headers: { 'Authorization' => "token #{TOKEN}" }
     )
   end
 
