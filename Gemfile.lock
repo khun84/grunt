@@ -117,7 +117,7 @@ GEM
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
     ipaddress (0.8.3)
-    jmespath (1.4.0)
+    jmespath (1.6.1)
     logstash-event (1.2.02)
     logstash-logger (0.26.1)
       logstash-event (~> 1.2)
